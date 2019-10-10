@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun init(bundle: Bundle?) {
         AndroidNetworking.initialize(applicationContext)
+        showLoading(true, false)
         count_tv.text = "1/8"
 
         currentItem = bundle?.getInt(CURRENT_ITEM) ?: 1
@@ -48,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         swipeView.addItemRemoveListener {
-            Log.d("Main", "$it")
             currentItem++
             count_tv.text = calculateCount()
         }
@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         viewModel.getData().observe(this, Observer { list ->
+            // User has started over. Hence all existing views
+            // are removed and new ones are added
             if (isAdded) {
                 swipeView.removeAllViews()
             }
@@ -67,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             isAdded = true
+
+            showLoading(false, list.isEmpty())
         })
     }
 
@@ -78,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun calculateCount(): String {
         if (currentItem > 8)
-            return "All items have been swiped!"
+            return getString(R.string.all_items_swiped_msg)
 
         return "$currentItem/8"
     }
@@ -91,9 +95,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.restart) {
             startOver()
+            toast(getString(R.string.restart_msg))
             return true
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -101,6 +105,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.startOver()
         currentItem = 1
         count_tv.text = calculateCount()
+    }
+
+    private fun showLoading(boolean: Boolean, isError: Boolean) {
+        if (isError) {
+            title = "${resources.getString(R.string.app_name)} (Offline)"
+            return
+        }
+
+        title = if (boolean)
+            "Loading..."
+        else
+            resources.getString(R.string.app_name)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

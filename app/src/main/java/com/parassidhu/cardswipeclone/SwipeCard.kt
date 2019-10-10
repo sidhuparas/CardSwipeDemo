@@ -19,7 +19,8 @@ class SwipeCard(var data: Data,
 
     @Resolve
     fun onResolved() {
-        textView.text = data.text
+        if (::textView.isInitialized)
+            textView.text = data.text
     }
 
     @SwipeOut

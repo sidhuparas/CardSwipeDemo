@@ -3,4 +3,6 @@
     <string name="restart">Restart</string>
     <string name="left">Left</string>
     <string name="right">Right</string>
+    <string name="all_items_swiped_msg">All items have been swiped!</string>
+    <string name="restart_msg">Let\'s start over :)</string>
 </resources>
