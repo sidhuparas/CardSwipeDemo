@@ -16,18 +16,21 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
     private var currentItem = 1
+    private var listOfItems = listOf<Data>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        init()
+        init(savedInstanceState)
         initViewModel()
     }
 
-    private fun init() {
+    private fun init(bundle: Bundle?) {
         AndroidNetworking.initialize(applicationContext)
         count_tv.text = "1/8"
+
+        currentItem = bundle?.getInt(CURRENT_ITEM) ?: 1
 
         swipeView.getBuilder<SwipePlaceHolderView, SwipeViewBuilder<SwipePlaceHolderView>>()
             .setDisplayViewCount(3)
@@ -51,9 +54,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
         viewModel.getData().observe(this, Observer { list ->
-            for (item in list) {
-                swipeView.addView(SwipeCard(item, swipeView))
-            }
+           if (listOfItems.isEmpty()) {
+               for (item in list) {
+                   swipeView.addView(SwipeCard(item, swipeView))
+               }
+           }
         })
     }
 
@@ -86,5 +91,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun startOver() {
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(CURRENT_ITEM, currentItem)
     }
 }
