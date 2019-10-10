@@ -1,8 +1,9 @@
-package com.parassidhu.cardswipeclone
+package com.parassidhu.cardswipeclone.utils
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
+import com.parassidhu.cardswipeclone.model.Data
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,20 +24,24 @@ object Repository {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<String> {
                 override fun onSuccess(result: String) {
-                    val correctedJson = fixJson(result)
-                    liveData.value = loadData(correctedJson)
+                    val correctedJson =
+                        fixJson(result)
+                    liveData.value =
+                        loadData(correctedJson)
                 }
 
                 override fun onSubscribe(d: Disposable) {}
 
                 override fun onError(e: Throwable) {
-                    Log.d(TAG, e.message)
+                    liveData.value = listOf(
+                        errorCard("No internet available!")
+                    )
                 }
             })
         return liveData
     }
 
-    private fun loadData(json: String): List<Data> {
+    fun loadData(json: String): List<Data> {
         return try {
             val gson = GsonBuilder().create()
             val obj = JSONObject(json)
@@ -51,7 +56,9 @@ object Repository {
             list
         } catch (e: Exception) {
             e.printStackTrace()
-            listOf(errorCard())
+            listOf(
+                errorCard("An error occurred parsing the data!")
+            )
         }
     }
 
@@ -60,9 +67,10 @@ object Repository {
         return string.substring(index + 1)
     }
 
-    private fun errorCard(): Data = Data(
-        id = 1,
-        text = "An error occurred parsing the data!",
-        isSwiped = false
-    )
+    private fun errorCard(errorMessage: String): Data =
+        Data(
+            id = 1,
+            text = errorMessage,
+            isSwiped = false
+        )
 }

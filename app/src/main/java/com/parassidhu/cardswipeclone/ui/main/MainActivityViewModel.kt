@@ -1,8 +1,10 @@
-package com.parassidhu.cardswipeclone
+package com.parassidhu.cardswipeclone.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.parassidhu.cardswipeclone.model.Data
+import com.parassidhu.cardswipeclone.utils.Repository
 
 class MainActivityViewModel: ViewModel() {
 

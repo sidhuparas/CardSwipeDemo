@@ -1,8 +1,10 @@
 package com.parassidhu.cardswipeclone
 
+import com.parassidhu.cardswipeclone.utils.Repository
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.util.regex.Pattern.matches
 
 /**
  * Example local unit test, which will execute on the development machine (host).

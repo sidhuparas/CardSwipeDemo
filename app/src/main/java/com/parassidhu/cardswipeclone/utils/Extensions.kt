@@ -1,4 +1,4 @@
-package com.parassidhu.cardswipeclone
+package com.parassidhu.cardswipeclone.utils
 
 import android.content.Context
 import android.widget.Toast

@@ -1,4 +1,4 @@
-package com.parassidhu.cardswipeclone
+package com.parassidhu.cardswipeclone.ui.main
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +10,10 @@ import com.androidnetworking.AndroidNetworking
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
+import com.parassidhu.cardswipeclone.R
+import com.parassidhu.cardswipeclone.utils.SwipeCard
+import com.parassidhu.cardswipeclone.utils.CURRENT_ITEM
+import com.parassidhu.cardswipeclone.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         calculateCount()
 
-        swipeView.getBuilder<SwipePlaceHolderView, SwipeViewBuilder<SwipePlaceHolderView>>()
+        swipe_view.getBuilder<SwipePlaceHolderView, SwipeViewBuilder<SwipePlaceHolderView>>()
             .setDisplayViewCount(3)
             .setSwipeDecor(swipeDecor)
 
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             swipeFunction(true)
         }
 
-        swipeView.addItemRemoveListener {
+        swipe_view.addItemRemoveListener {
             currentItem++
             calculateCount()
         }
@@ -57,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         if (currentItem > totalSize)
             toast("Nothing else to swipe :)")
         else
-            swipeView.doSwipe(isSwipeIn)
+            swipe_view.doSwipe(isSwipeIn)
     }
 
     private fun initViewModel() {
@@ -66,12 +70,12 @@ class MainActivity : AppCompatActivity() {
             // User has started over. Hence all existing views
             // are removed and new ones are added
             if (isAdded) {
-                swipeView.removeAllViews()
+                swipe_view.removeAllViews()
             }
 
             for (item in list) {
                 if (!item.isSwiped)
-                    swipeView.addView(SwipeCard(item))
+                    swipe_view.addView(SwipeCard(item))
             }
 
             isAdded = true

@@ -1,4 +1,4 @@
-package com.parassidhu.cardswipeclone
+package com.parassidhu.cardswipeclone.model
 
 class Data (
         val id: Int,
