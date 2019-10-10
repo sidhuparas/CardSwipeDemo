@@ -51,7 +51,7 @@ object Repository {
             list
         } catch (e: Exception) {
             e.printStackTrace()
-            listOf()
+            listOf(errorCard())
         }
     }
 
@@ -59,4 +59,10 @@ object Repository {
         val index = string.indexOf("/")
         return string.substring(index + 1)
     }
+
+    private fun errorCard(): Data = Data(
+        1,
+        "An error occurred parsing the data!"
+        , false
+    )
 }

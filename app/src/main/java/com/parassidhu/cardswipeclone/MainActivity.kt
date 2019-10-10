@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel
     private var currentItem = 1
     private var isAdded = false
+    private var totalSize = 8   // Size of data set (default)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun init(bundle: Bundle?) {
         AndroidNetworking.initialize(applicationContext)
-        showLoading(true, false)
-        count_tv.text = "1/8"
+        showLoading(boolean = true, isError = false)
 
         currentItem = bundle?.getInt(CURRENT_ITEM) ?: 1
 
@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             isAdded = true
+            totalSize = list.size
+            count_tv.text = calculateCount()
 
             showLoading(false, list.isEmpty())
         })
@@ -81,10 +83,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateCount(): String {
-        if (currentItem > 8)
+        if (currentItem > totalSize)
             return getString(R.string.all_items_swiped_msg)
 
-        return "$currentItem/8"
+        return "$currentItem/$totalSize"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
