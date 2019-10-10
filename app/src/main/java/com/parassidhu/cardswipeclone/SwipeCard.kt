@@ -2,17 +2,15 @@ package com.parassidhu.cardswipeclone
 
 import android.util.Log
 import android.widget.TextView
-import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
 import com.mindorks.placeholderview.annotations.View
 import com.mindorks.placeholderview.annotations.swipe.*
 
 @Layout(R.layout.swipe_item)
-class SwipeCard(var data: Data,
-                var swipeView: SwipePlaceHolderView) {
+class SwipeCard(private var data: Data) {
 
-    val TAG = this.javaClass.simpleName
+    private val TAG = this.javaClass.simpleName
 
     @View(R.id.text_tv)
     lateinit var textView: TextView

@@ -1,7 +1,6 @@
 package com.parassidhu.cardswipeclone
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -34,24 +33,31 @@ class MainActivity : AppCompatActivity() {
 
         currentItem = bundle?.getInt(CURRENT_ITEM) ?: 1
 
-        count_tv.text = calculateCount()
+        calculateCount()
 
         swipeView.getBuilder<SwipePlaceHolderView, SwipeViewBuilder<SwipePlaceHolderView>>()
             .setDisplayViewCount(3)
             .setSwipeDecor(swipeDecor)
 
         left_btn.setOnClickListener {
-            swipeView.doSwipe(false)
+            swipeFunction(false)
         }
 
         right_btn.setOnClickListener {
-            swipeView.doSwipe(true)
+            swipeFunction(true)
         }
 
         swipeView.addItemRemoveListener {
             currentItem++
-            count_tv.text = calculateCount()
+            calculateCount()
         }
+    }
+
+    private fun swipeFunction(isSwipeIn: Boolean) {
+        if (currentItem > totalSize)
+            toast("Nothing else to swipe :)")
+        else
+            swipeView.doSwipe(isSwipeIn)
     }
 
     private fun initViewModel() {
@@ -65,12 +71,12 @@ class MainActivity : AppCompatActivity() {
 
             for (item in list) {
                 if (!item.isSwiped)
-                    swipeView.addView(SwipeCard(item, swipeView))
+                    swipeView.addView(SwipeCard(item))
             }
 
             isAdded = true
             totalSize = list.size
-            count_tv.text = calculateCount()
+            calculateCount()
 
             showLoading(false, list.isEmpty())
         })
@@ -82,11 +88,11 @@ class MainActivity : AppCompatActivity() {
             .setRelativeScale(0.01f)
     }
 
-    private fun calculateCount(): String {
-        if (currentItem > totalSize)
-            return getString(R.string.all_items_swiped_msg)
-
-        return "$currentItem/$totalSize"
+    private fun calculateCount() {
+        count_tv.text =
+            if (currentItem > totalSize)
+                getString(R.string.all_items_swiped_msg)
+            else "$currentItem/$totalSize"
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -106,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     private fun startOver() {
         viewModel.startOver()
         currentItem = 1
-        count_tv.text = calculateCount()
+        calculateCount()
     }
 
     private fun showLoading(boolean: Boolean, isError: Boolean) {

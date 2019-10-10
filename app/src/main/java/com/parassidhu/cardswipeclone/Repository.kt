@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 
 object Repository {
-    private val TAG = "Utils"
+    private const val TAG = "Utils"
 
     fun getData(): MutableLiveData<List<Data>> {
         val liveData = MutableLiveData<List<Data>>()
@@ -61,8 +61,8 @@ object Repository {
     }
 
     private fun errorCard(): Data = Data(
-        1,
-        "An error occurred parsing the data!"
-        , false
+        id = 1,
+        text = "An error occurred parsing the data!",
+        isSwiped = false
     )
 }

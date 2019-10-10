@@ -3,4 +3,6 @@
     <color name="colorPrimary">#FFA000</color>
     <color name="colorPrimaryDark">#FFA000</color>
     <color name="colorAccent">#1565C0</color>
+
+    <color name="light_pink">#FFCDD2</color>
 </resources>
