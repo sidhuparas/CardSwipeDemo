@@ -12,6 +12,8 @@ import com.mindorks.placeholderview.annotations.swipe.*
 class SwipeCard(var data: Data,
                 var swipeView: SwipePlaceHolderView) {
 
+    val TAG = this.javaClass.simpleName
+
     @View(R.id.text_tv)
     lateinit var textView: TextView
 
@@ -22,27 +24,11 @@ class SwipeCard(var data: Data,
 
     @SwipeOut
     fun onSwipedOut() {
-        Log.d("EVENT", "onSwipedOut")
-        swipeView.addView(this)
-    }
-
-    @SwipeCancelState
-    fun onSwipeCancelState() {
-        Log.d("EVENT", "onSwipeCancelState")
+        Log.d(TAG, "onSwipedOut")
     }
 
     @SwipeIn
     fun onSwipeIn() {
-        Log.d("EVENT", "onSwipedIn")
-    }
-
-    @SwipeInState
-    fun onSwipeInState() {
-        Log.d("EVENT", "onSwipeInState")
-    }
-
-    @SwipeOutState
-    fun onSwipeOutState() {
-        Log.d("EVENT", "onSwipeOutState")
+        Log.d(TAG, "onSwipedIn")
     }
 }

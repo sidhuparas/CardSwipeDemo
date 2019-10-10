@@ -15,25 +15,6 @@ object Repository {
     private val URL =
         "https://gist.githubusercontent.com/anishbajpai014/d482191cb4fff429333c5ec64b38c197/raw/b11f56c3177a9ddc6649288c80a004e7df41e3b9/HiringTask.json"
 
-    fun loadData(json: String): List<Data> {
-        return try {
-            val gson = GsonBuilder().create()
-            val obj = JSONObject(json)
-            val array = obj.getJSONArray("data")
-            val list = ArrayList<Data>()
-            Log.d(TAG, array.length().toString())
-
-            for (i in 0 until array.length()) {
-                val profile = gson.fromJson<Data>(array.getString(i), Data::class.java)
-                list.add(profile)
-            }
-            list
-        } catch (e: Exception) {
-            e.printStackTrace()
-            listOf()
-        }
-    }
-
     fun getData(): MutableLiveData<List<Data>> {
         val liveData = MutableLiveData<List<Data>>()
 
@@ -55,6 +36,25 @@ object Repository {
                 }
             })
         return liveData
+    }
+
+    private fun loadData(json: String): List<Data> {
+        return try {
+            val gson = GsonBuilder().create()
+            val obj = JSONObject(json)
+            val array = obj.getJSONArray("data")
+            val list = ArrayList<Data>()
+            Log.d(TAG, array.length().toString())
+
+            for (i in 0 until array.length()) {
+                val profile = gson.fromJson<Data>(array.getString(i), Data::class.java)
+                list.add(profile)
+            }
+            list
+        } catch (e: Exception) {
+            e.printStackTrace()
+            listOf()
+        }
     }
 
     private fun fixJson(string: String): String {
