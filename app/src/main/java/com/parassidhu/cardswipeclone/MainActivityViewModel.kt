@@ -15,4 +15,14 @@ class MainActivityViewModel: ViewModel() {
     fun getData(): LiveData<List<Data>> {
         return liveData
     }
+
+    fun startOver() {
+        val list = liveData.value ?: return
+
+        for (item in list) {
+            item.isSwiped = false
+        }
+
+        liveData.value = list
+    }
 }

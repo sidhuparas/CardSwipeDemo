@@ -25,10 +25,12 @@ class SwipeCard(var data: Data,
     @SwipeOut
     fun onSwipedOut() {
         Log.d(TAG, "onSwipedOut")
+        data.isSwiped = true
     }
 
     @SwipeIn
     fun onSwipeIn() {
         Log.d(TAG, "onSwipedIn")
+        data.isSwiped = true
     }
 }

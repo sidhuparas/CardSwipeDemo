@@ -1,6 +1,7 @@
 package com.parassidhu.cardswipeclone
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
     private var currentItem = 1
-    private var listOfItems = listOf<Data>()
+    private var isAdded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         currentItem = bundle?.getInt(CURRENT_ITEM) ?: 1
 
+        count_tv.text = calculateCount()
+
         swipeView.getBuilder<SwipePlaceHolderView, SwipeViewBuilder<SwipePlaceHolderView>>()
             .setDisplayViewCount(3)
             .setSwipeDecor(swipeDecor)
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         swipeView.addItemRemoveListener {
+            Log.d("Main", "$it")
             currentItem++
             count_tv.text = calculateCount()
         }
@@ -52,13 +56,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-
         viewModel.getData().observe(this, Observer { list ->
-           if (listOfItems.isEmpty()) {
-               for (item in list) {
-                   swipeView.addView(SwipeCard(item, swipeView))
-               }
-           }
+            if (isAdded) {
+                swipeView.removeAllViews()
+            }
+
+            for (item in list) {
+                if (!item.isSwiped)
+                    swipeView.addView(SwipeCard(item, swipeView))
+            }
+
+            isAdded = true
         })
     }
 
@@ -90,7 +98,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startOver() {
-
+        viewModel.startOver()
+        currentItem = 1
+        count_tv.text = calculateCount()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
